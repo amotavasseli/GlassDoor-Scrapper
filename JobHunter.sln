@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScraperConsoleApp", "ScrapperConsoleApp\ScraperConsoleApp.csproj", "{3BB81BA0-0480-49B9-A447-00633759D00C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHunter.Web", "GlassDoorScrapper.Service\JobHunter.Web.csproj", "{DF63D31D-660B-4058-9FBF-82467DC100C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHunter.Web", "JobHunter.Web\JobHunter.Web.csproj", "{DF63D31D-660B-4058-9FBF-82467DC100C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIScraperLibrary", "LIScraperLibrary\LIScraperLibrary.csproj", "{51BF2575-4FEB-41DE-B09D-A01266938EFA}"
 EndProject
