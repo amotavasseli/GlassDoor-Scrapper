@@ -109,7 +109,10 @@ namespace ScraperConsoleApp
                         if (elem.HasAttribute("href"))
                         {
                             String attr = elem.GetAttribute("href");
-                            job.Url = attr;
+                            var uri = attr.Split('?')[0];
+                            //var uri = new Uri(attr); 
+                            
+                            job.Url = uri;
                         }
                         jobs.Add(job);
                     }
