@@ -41,6 +41,7 @@ namespace JobHunter.Web
                         job.PostDate = reader.GetString(6);
                         job.DateCreated = reader.GetDateTime(7);
                         job.DateModified = reader.GetDateTime(8);
+                        job.DateApplied = reader["date_applied"] is DBNull ? (DateTime?)null : (DateTime?)reader["date_applied"];
                         jobs.Add(job);
                     }
                     return jobs;

@@ -14,6 +14,7 @@ namespace JobHunter.Web.Domains
         public string Description { get; set; }
         public string Location { get; set; }
         public string PostDate { get; set; }
+        public DateTime? DateApplied { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
     }

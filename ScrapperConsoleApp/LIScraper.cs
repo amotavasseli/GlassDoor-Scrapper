@@ -21,8 +21,9 @@ namespace ScraperConsoleApp
         static void Main(string[] args)
         {
             List<JobPosting> jobs = new List<JobPosting>();
-            string initialUrl = 
-                "https://www.linkedin.com/jobs/search?keywords=Software+Engineer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_F=it%2Ceng&f_E=2%2C3&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_function";
+            string initialUrl =
+                "https://www.linkedin.com/jobs/search?keywords=Web+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
+            
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
             options.AddArgument("--incognito");
@@ -90,17 +91,45 @@ namespace ScraperConsoleApp
 
                     var checkTitle = listing.QuerySelector("span.job-title-text").TextContent;
 
-                    if (checkTitle.Contains("Software")
-                        && !checkTitle.Contains("Senior")
+                    if (!checkTitle.Contains("Senior")
                         && !checkTitle.Contains("Sr")
                         && !checkTitle.Contains("Lead")
                         && !checkTitle.Contains("Principal")
+                        && !checkTitle.Contains("Java")
+                        && !checkTitle.Contains("Clearance")
+                        && !checkTitle.Contains("Graphics")
+                        && !checkTitle.Contains("Android")
+                        && !checkTitle.Contains("iOS")
+                        && !checkTitle.Contains("Wordpress")
+                        && !checkTitle.Contains("WordPress")
+                        && !checkTitle.Contains("PHP")
+                        && !checkTitle.Contains("Architect")
+                        && !checkTitle.Contains("Ruby")
+                        && !checkTitle.Contains("Manager")
+                        && !checkTitle.Contains("Design")
+                        && !checkTitle.Contains("UI")
+                        && !checkTitle.Contains("Python")
+                        && !checkTitle.Contains("HTML")
+                        && !checkTitle.Contains("CSS")
+                        && !checkTitle.Contains("Salesforce")
+                        && !checkTitle.Contains("SENIOR")
+                        && !checkTitle.Contains("Analyst")
+                        && checkTitle.Contains("Web Developer") //this needs to be changed with each search
                         )
                     {
                         job.JobTitle = checkTitle;
                         job.PostDate = listing.QuerySelector("span.date-posted-or-new").TextContent;
                         job.Company = listing.QuerySelector("span.company-name-text").TextContent;
-                        job.Location = listing.QuerySelector("span.job-location > span").TextContent;
+                        string checkLocation = listing.QuerySelector("span.job-location > span").TextContent;
+                        if(checkLocation.Contains(", US"))
+                        {
+                            job.Location = checkLocation.Replace(", US", "");
+                        }
+                        else
+                        {
+                            job.Location = checkLocation;
+                        }
+                        
                         job.JobDescription = listing.QuerySelector("div.job-description").TextContent;
                         //Job Link
                         XmlDocument xml = new XmlDocument();

@@ -34,9 +34,10 @@ namespace LIScraperLibrary
                 
                 for (int i = 0; i < jobs.Count; i++)
                 {
+                    JobPosting job = jobs[i];
                     try
                     {
-                        JobPosting job = jobs[i];
+                        
                         SqlCommand cmd = ConnectionWrapper("Jobs_insert", con);
                         cmd.Parameters.AddWithValue("@link", job.Url);
                         cmd.Parameters.AddWithValue("@company", job.Company);
@@ -50,7 +51,11 @@ namespace LIScraperLibrary
                     }
                     catch (SqlException exp) when (exp.Number == 2601)
                     {
-                        Trace.WriteLine(exp.Message);
+                        SqlCommand c = ConnectionWrapper("Jobs_updatepostdate", con);
+                        c.Parameters.AddWithValue("@link", job.Url);
+                        c.Parameters.AddWithValue("@post_date", job.PostDate);
+                        c.Parameters.AddWithValue("@location", job.Location);
+                        c.ExecuteNonQuery();
                         continue;
                         // ignore and continue 
                     }
