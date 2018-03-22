@@ -1,29 +1,25 @@
-﻿using AngleSharp.Extensions;
-using AngleSharp.Parser.Html;
+﻿using AngleSharp.Parser.Html;
 using LIScraperLibrary;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace ScraperConsoleApp
+namespace LIScraperLibrary
 {
-    public class LIScraper
+    public class Scraper
     {
-        static void Main(string[] args)
+        public void LIScraper()
         {
             List<JobPosting> jobs = new List<JobPosting>();
             string initialUrl =
-                "https://www.linkedin.com/jobs/search?keywords=Full+Stack+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
-            
+                "https://www.linkedin.com/jobs/search?keywords=Web+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
+
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
             options.AddArgument("--incognito");
@@ -44,7 +40,7 @@ namespace ScraperConsoleApp
             {
                 totalListings = Convert.ToInt32(findListings);
             }
-            
+
             int pages = 1;
             addJobs(initialRange);
             if (totalListings > 50)
@@ -56,7 +52,7 @@ namespace ScraperConsoleApp
                 }
 
                 pages = (int)Math.Floor((decimal)totalListings / 50) + extraPage;
-                
+
                 for (int j = 1; j < pages; j++)
                 {
                     start = j * 50 + 1;
@@ -66,9 +62,9 @@ namespace ScraperConsoleApp
 
             }
 
-            void addJobs (string url)
+            void addJobs(string url)
             {
-                if(pages > 1)
+                if (pages > 1)
                 {
                     //INavigation GoToUrl(url);
                     options = new ChromeOptions();
@@ -114,15 +110,14 @@ namespace ScraperConsoleApp
                         && !checkTitle.Contains("Salesforce")
                         && !checkTitle.Contains("SENIOR")
                         && !checkTitle.Contains("Analyst")
-                        && !checkTitle.Contains("SR")
-                        && checkTitle.Contains("Full Stack") //this needs to be changed with each search
+                        && checkTitle.Contains("Web Developer") //this needs to be changed with each search
                         )
                     {
                         job.JobTitle = checkTitle;
                         job.PostDate = listing.QuerySelector("span.date-posted-or-new").TextContent;
                         job.Company = listing.QuerySelector("span.company-name-text").TextContent;
                         string checkLocation = listing.QuerySelector("span.job-location > span").TextContent;
-                        if(checkLocation.Contains(", US"))
+                        if (checkLocation.Contains(", US"))
                         {
                             job.Location = checkLocation.Replace(", US", "");
                         }
@@ -130,7 +125,7 @@ namespace ScraperConsoleApp
                         {
                             job.Location = checkLocation;
                         }
-                        
+
                         job.JobDescription = listing.QuerySelector("div.job-description").TextContent;
                         //Job Link
                         XmlDocument xml = new XmlDocument();
@@ -141,13 +136,12 @@ namespace ScraperConsoleApp
                             String attr = elem.GetAttribute("href");
                             var uri = attr.Split('?')[0];
                             //var uri = new Uri(attr); 
-                            
+
                             job.Url = uri;
                         }
                         jobs.Add(job);
                     }
                 }
-                
             }
             ScraperService scraperService = new ScraperService(ConfigurationManager.ConnectionStrings["LIConnection"].ConnectionString);
             scraperService.Post(jobs);

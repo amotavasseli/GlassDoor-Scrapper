@@ -3,3 +3,38 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+#header {
+  display: flex;
+}
+
+
+/* 
+@media print {
+  #root {
+    display: none;
+  }
+
+  .modal-header {
+    display: none;
+  }
+
+  .modal-footer {
+    display: none;
+  }
+
+  .modal-content {
+    border: 0px;
+  }
+  #name {
+    display: inline; 
+  }
+} */
+/* @media screen {
+
+} */
+
+
+
+
+
+

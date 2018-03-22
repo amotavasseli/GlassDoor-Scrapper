@@ -19,14 +19,16 @@ class Jobs extends React.Component{
             error => console.log(error)
         );
     }
-    didApply = event => {
+    onApplied = event => {
         console.log(event.target.checked);
         if(event.target.checked){
-            event.target.value = new Date();
+            const date = new Date();
+            event.target.value = date.toDateString();
         }
-        console.log(event.target.value.toDateString());
-        //event.target.value = !event.target.value;
-        
+    }
+    didApply = date => {
+        const convert = new Date(date);
+        return convert.toDateString();
     }
 
     render(){
@@ -36,13 +38,18 @@ class Jobs extends React.Component{
                     this.state.didMount && this.state.jobs.map((job, index) => (
                         <div className="col-md-6 col-md-offset-2" key={index}>
                             <h3>Title: {job.Title} <span><CoverLetter jobdata={job} /> </span></h3>
-                         
-                            <h5>Applied?
-                                <input type="checkbox" value={job.DateApplied ? true : false} checked={this.state.checked} onChange={this.didApply} />
-                            </h5>
-                            
                             {
-                                job.DateApplied ? <h5 style={{color: "green"}}>job.DateApplied</h5> : <div></div>
+                                job.DateApplied ? 
+                                    <h5 style={{color: "green"}}>
+                                        Applied on {this.didApply(job.DateApplied)}
+                                    </h5> 
+                                    : <h5>Applied?  
+                                        <input 
+                                            type="checkbox" 
+                                            value={job.DateApplied? job.DateApplied : false} 
+                                            checked={this.state.checked} 
+                                            onChange={this.onApplied} />
+                                    </h5>
                             }
                             <h4>Company: {job.Company}</h4>
                             <h5>Location: {job.Location}</h5>
