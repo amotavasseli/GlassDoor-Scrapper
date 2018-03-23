@@ -1,8 +1,10 @@
 ﻿using JobHunter.Web.Domains;
+using JobHunter.Web.Requests;
 using LIScraperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -47,6 +49,52 @@ namespace JobHunter.Web
                     }
                     return jobs;
                 }
+            }
+        }
+        public int Create(JobRequest req)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = ConnectionWrapper("Jobs_insert", con);
+                cmd.Parameters.AddWithValue("@title", req.Title);
+                cmd.Parameters.AddWithValue("@link", req.Link);
+                cmd.Parameters.AddWithValue("@company", req.Company);
+                cmd.Parameters.AddWithValue("@description", req.Description);
+                cmd.Parameters.AddWithValue("@location", req.Location);
+                cmd.Parameters.AddWithValue("@post_date", req.PostDate);
+                cmd.Parameters.AddWithValue("@date_applied", req.DateApplied ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@archived", req.Archived);
+                cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                cmd.ExecuteNonQuery();
+
+                
+
+                return (int)cmd.Parameters["@id"].Value;
+
+            }
+
+        }
+
+        public void Update(JobUpdateRequest req)
+        {
+            using(SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = ConnectionWrapper("Jobs_update", con);
+                cmd.Parameters.AddWithValue("@id", req.Id);
+                cmd.Parameters.AddWithValue("@title", req.Title);
+                cmd.Parameters.AddWithValue("@link", req.Link);
+                cmd.Parameters.AddWithValue("@company", req.Company);
+                cmd.Parameters.AddWithValue("@description", req.Description);
+                cmd.Parameters.AddWithValue("@location", req.Location);
+                cmd.Parameters.AddWithValue("@post_date", req.PostDate);
+                cmd.Parameters.AddWithValue("@date_applied", req.DateApplied ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@archived", req.Archived);
+
+                cmd.ExecuteNonQuery();
+                
             }
         }
     }
