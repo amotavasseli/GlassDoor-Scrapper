@@ -17,5 +17,6 @@ namespace JobHunter.Web.Domains
         public DateTime? DateApplied { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public bool Archived { get; set; }
     }
 }

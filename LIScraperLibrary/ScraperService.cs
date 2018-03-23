@@ -45,6 +45,7 @@ namespace LIScraperLibrary
                         cmd.Parameters.AddWithValue("@description", job.JobDescription);
                         cmd.Parameters.AddWithValue("@location", job.Location);
                         cmd.Parameters.AddWithValue("@post_date", job.PostDate);
+                        cmd.Parameters.AddWithValue("@archived", job.Archived);
                         cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
 

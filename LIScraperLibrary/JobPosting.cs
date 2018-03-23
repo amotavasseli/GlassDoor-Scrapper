@@ -14,5 +14,6 @@ namespace LIScraperLibrary
         public string Location { get; set; }
         public string PostDate { get; set; }
         public string JobDescription { get; set; }
+        public bool Archived { get; set; }
     }
 }
