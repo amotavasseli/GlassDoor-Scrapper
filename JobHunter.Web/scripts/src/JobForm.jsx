@@ -57,7 +57,7 @@ class JobForm extends React.Component {
                                 <label>Date Applied</label>
                                 <input type="text" className="form-control" placeholder="MM/DD/YYYY" onChange={e => this.handleChange("dateApplied", e)} />
                             </div>
-                            <button type="button" className="btn btn-primary" onClick={() => this.addJobs()}>Add</button>
+                            <button type="button" className="btn btn-primary pull-right" onClick={() => this.addJobs()}>Add</button>
                         </form>
                     </div>
                 </div>
