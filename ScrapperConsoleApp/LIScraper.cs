@@ -22,7 +22,7 @@ namespace ScraperConsoleApp
         {
             List<JobPosting> jobs = new List<JobPosting>();
             string initialUrl =
-                "https://www.linkedin.com/jobs/search?keywords=Software+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
+                "https://www.linkedin.com/jobs/search?keywords=Software+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&orig=FCTD&trk=jobs_jserp_facet_exp";
             
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
@@ -103,7 +103,7 @@ namespace ScraperConsoleApp
                         && !checkTitle.Contains("Wordpress")
                         && !checkTitle.Contains("WordPress")
                         && !checkTitle.Contains("PHP")
-                        && checkTitle.IndexOf("Architect", StringComparison.OrdinalIgnoreCase) != -1
+                       // && checkTitle.IndexOf("Architect", StringComparison.OrdinalIgnoreCase) != -1
                         && !checkTitle.Contains("Ruby")
                         && !checkTitle.Contains("Manager")
                         && !checkTitle.Contains("Design")
