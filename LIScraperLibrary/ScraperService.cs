@@ -37,7 +37,7 @@ namespace LIScraperLibrary
                     JobPosting job = jobs[i];
                     try
                     {
-                        
+                        // Post new job into the database. 
                         SqlCommand cmd = ConnectionWrapper("Jobs_insert", con);
                         cmd.Parameters.AddWithValue("@link", job.Url);
                         cmd.Parameters.AddWithValue("@company", job.Company);
@@ -51,6 +51,7 @@ namespace LIScraperLibrary
                         cmd.ExecuteNonQuery();
 
                     }
+                        //if job already exists in the database, update the job's post date. 
                     catch (SqlException exp) when (exp.Number == 2601)
                     {
                         SqlCommand c = ConnectionWrapper("Jobs_updatepostdate", con);

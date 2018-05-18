@@ -1,4 +1,5 @@
 ﻿using JobHunter.Web.Requests;
+using LIScraperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,18 @@ namespace JobHunter.Web.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class JobsController : ApiController
     {
-        readonly IJobsService jobs; 
-        public JobsController(IJobsService jobs)
+        readonly IJobsService jobs;
+        readonly IScraper scraper;
+        public JobsController(IJobsService jobs, IScraper scraper)
         {
             this.jobs = jobs;
+            this.scraper = scraper;
         }
 
         [HttpGet, Route("api/jobs")]
         public HttpResponseMessage GetAll()
         {
+            scraper.LIScraper();
             var listings = jobs.GetAll();
             return Request.CreateResponse(HttpStatusCode.OK, listings); 
         }

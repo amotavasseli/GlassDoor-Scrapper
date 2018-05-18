@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,18 +13,30 @@ using System.Xml;
 
 namespace LIScraperLibrary
 {
-    public class Scraper
+    public class Scraper : IScraper
     {
+        /*
+         The scraper will scrape every job listing on linkedin that contains my desired job titles. 
+         Job titles include: .NET Developer, C# Developer, Software Engineer, S Developer, Web Developer, 
+                             Full Stack Developer, Back End Engineer, Front End Engineer, B and F Developer.
+             
+        */
+
         public void LIScraper()
         {
             List<JobPosting> jobs = new List<JobPosting>();
+            // The URL uses LinkedIn's built-in filters, enabling us to input job titles, distance in miles from a specific location, location, and job type.
+            // EX: "keywords=Job+Title distance=15 locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_  JT=FULL_TIME
             string initialUrl =
-                "https://www.linkedin.com/jobs/search?keywords=Web+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
+                "https://www.linkedin.com/jobs/search?keywords=Software+Developer&distance=15&locationId=PLACES%2Eus%2E7-1-0-19-99&f_TP=1%2C2&f_E=3%2C2&f_JT=FULL_TIME&orig=FCTD&trk=jobs_jserp_facet_exp";
 
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
             options.AddArgument("--incognito");
             options.AddArgument("--ignore-certificate-errors");
+            //options.DebuggerAddress = "{http://localhost:49647|2605:e000:840e:f700:d5b4:8734:4391:4048}";
+            Trace.WriteLine("Hello");
+            Trace.WriteLine(options);
 
             IWebDriver chromeDriver = new ChromeDriver(options);
             int start = 1;
@@ -40,7 +53,7 @@ namespace LIScraperLibrary
             {
                 totalListings = Convert.ToInt32(findListings);
             }
-
+            // LinkedIn allows up to 50 job listings on a single page.
             int pages = 1;
             addJobs(initialRange);
             if (totalListings > 50)
@@ -66,7 +79,6 @@ namespace LIScraperLibrary
             {
                 if (pages > 1)
                 {
-                    //INavigation GoToUrl(url);
                     options = new ChromeOptions();
                     options.AddArgument("--headless");
                     options.AddArgument("--incognito");
@@ -86,7 +98,7 @@ namespace LIScraperLibrary
                         .QuerySelector("div.job-details");
 
                     var checkTitle = listing.QuerySelector("span.job-title-text").TextContent;
-
+                    // Ignore job that contain these words in the job title. 
                     if (!checkTitle.Contains("Senior")
                         && !checkTitle.Contains("Sr")
                         && !checkTitle.Contains("Lead")
@@ -110,7 +122,7 @@ namespace LIScraperLibrary
                         && !checkTitle.Contains("Salesforce")
                         && !checkTitle.Contains("SENIOR")
                         && !checkTitle.Contains("Analyst")
-                        && checkTitle.Contains("Web Developer") //this needs to be changed with each search
+                        && checkTitle.Contains("Software Developer") //this needs to be changed with each search
                         )
                     {
                         job.JobTitle = checkTitle;
@@ -135,7 +147,6 @@ namespace LIScraperLibrary
                         {
                             String attr = elem.GetAttribute("href");
                             var uri = attr.Split('?')[0];
-                            //var uri = new Uri(attr); 
 
                             job.Url = uri;
                         }

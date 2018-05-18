@@ -1,3 +1,4 @@
+using LIScraperLibrary;
 using System;
 
 using Unity;
@@ -43,6 +44,7 @@ namespace JobHunter.Web
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IJobsService, JobsService>();
+            container.RegisterType<IScraper, Scraper>();
         }
     }
 }
